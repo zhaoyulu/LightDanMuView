@@ -14,5 +14,6 @@ class DanMuSurfaceView : SurfaceView ,DanMuViewContact.View{
 
     override fun onDraw(canvas: Canvas) {
         super.onDraw(canvas)
+
     }
 }
