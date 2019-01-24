@@ -2,10 +2,11 @@ package com.qiyi.kotlinqimu
 
 import android.graphics.Canvas
 import android.graphics.Paint
+import com.example.lightdanmu.DanMu
 
 class Item {
 
-    var mu: Mu
+    var mu: DanMu
     private var paint: Paint
     var muLength: Int = -1
 
@@ -17,7 +18,7 @@ class Item {
     }
 
 
-    constructor(mu: Mu) {
+    constructor(mu: DanMu) {
         this.mu = mu
         this.paint = Paint()
     }
