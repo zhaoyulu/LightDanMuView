@@ -6,11 +6,11 @@ class DanMu {
     private val mDefaultTextSize: Float = 55.0F
 
     @Volatile
-    private var mInfo: String;
+    private var mInfo: String
     @Volatile
-    private var mTextColor: Int;
+    private var mTextColor: Int
     @Volatile
-    private var mTextSize: Float;
+    private var mTextSize: Float
 
     fun getTextColor(): Int {
         return mTextColor

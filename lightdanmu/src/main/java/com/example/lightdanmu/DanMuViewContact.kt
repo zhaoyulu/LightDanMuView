@@ -9,8 +9,9 @@ interface DanMuViewContact {
     }
 
     interface Presenter{
-        fun draw(canvas: Canvas)
-
+        fun draw(canvas: Canvas?)
+        fun  setWith(int: Int)
+        fun  setHeight(int: Int)
     }
 
 }

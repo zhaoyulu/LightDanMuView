@@ -8,12 +8,18 @@ class DanMuSurfacePresenter : DanMuViewContact.Presenter{
     private var mView:DanMuViewContact.View
     private lateinit var frameCallback: Choreographer.FrameCallback
 
+    private var mWith : Int = 0
+    private var mHight : Int = 0
+
+    override fun  setWith(int: Int){mWith = int}
+    override fun  setHeight(int: Int){mHight = int}
+
     constructor(view : DanMuViewContact.View){
         mView = view
 
     }
 
-    override fun draw(canvas: Canvas) {
+    override fun draw(canvas: Canvas?) {
 
     }
 
