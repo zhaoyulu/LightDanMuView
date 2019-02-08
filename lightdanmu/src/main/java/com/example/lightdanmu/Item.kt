@@ -1,36 +1,37 @@
-package com.qiyi.kotlinqimu
+package com.example.lightdanmu
 
 import android.graphics.Canvas
 import android.graphics.Paint
-import com.example.lightdanmu.DanMu
 
 class Item {
-
+    @Volatile
     var mu: DanMu
-    private var paint: Paint
-    var muLength: Int = -1
 
+    private val paint: Paint = Paint()
+    @Volatile
+    var muLength: Float = -1f
+    @Volatile
     var x: Float = 0.0f
-    var y: Float = 100.0f
-    var speed : Float = 0.0f
-    fun getPaint(): Paint {
-        return paint
-    }
-
+    @Volatile
+    var y: Float = 0.0f
+    var speed : Float = 3.0f
 
     constructor(mu: DanMu) {
         this.mu = mu
-        this.paint = Paint()
+    }
+
+    fun getPaint():Paint{
+        return paint
     }
 
     //需要功能完善
     private fun move(speed: Float) {
-        x = x - speed
+        x  -=  speed
     }
 
-    fun draw(canvas: Canvas) {
+    fun draw(canvas: Canvas?) {
         move(this.speed)
-        canvas.drawText(mu.getInfo(), this.x, y, paint)
+        canvas?.drawText(mu.getInfo(), x, y, paint)
     }
 
 }

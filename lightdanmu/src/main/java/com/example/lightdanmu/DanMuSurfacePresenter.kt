@@ -1,27 +1,81 @@
 package com.example.lightdanmu
 
 import android.graphics.Canvas
-import android.graphics.Color
-import android.graphics.Paint
+import android.util.SparseArray
+import java.util.*
+import java.util.concurrent.ConcurrentLinkedQueue
+
 
 class DanMuSurfacePresenter : DanMuViewContact.Presenter{
 
     private var mView:DanMuViewContact.View
-
+    //仅外部线程可能访问
+    private var mWaitingPool:ConcurrentLinkedQueue<Item>
+    //仅内部线程可能访问
+    private var mUsingPool:LinkedList<Item>
     private var mWith : Int = 0
     private var mHight : Int = 0
+    private lateinit var mEmptyLine:SparseArray<Item?>
 
-    override fun  setWith(int: Int){mWith = int}
-    override fun  setHeight(int: Int){mHight = int}
+    //需要build模式的
+    private val maxLine = 10
+    private val mMinSplit = 20
+    private val mEachHigh = 50
 
     constructor(view : DanMuViewContact.View){
         mView = view
-
+        mWaitingPool = ConcurrentLinkedQueue()
+        mUsingPool = LinkedList()
     }
+
+    override fun  setWith(int: Int){
+        mWith = int
+        mEmptyLine = SparseArray()
+        for (i in 0..maxLine){
+            mEmptyLine.put(i*mEachHigh+mEachHigh,null)
+        }
+    }
+    override fun  setHeight(int: Int){mHight = int}
 
     override fun draw(canvas: Canvas?) {
-        var paint =Paint()
-        paint.color = Color.BLUE
-        canvas?.drawText("aaaaaaaaaa",200f, 100f,paint)
+        for (item:Item in mUsingPool){
+            item.draw(canvas)
+            if (item.x + item.muLength <=0){
+                mUsingPool.remove(item)
+                ItemPool.intance.returnDanMu(item)
+            }
+        }
+        trigger()
     }
+
+    private fun trigger(){
+        for (i in 0 until mEmptyLine.size()) {
+            val key = mEmptyLine.keyAt(i)
+            val item = mEmptyLine.get(key)
+            if((item == null || item.muLength + item.x +mMinSplit < mWith)
+                    && !mWaitingPool.isEmpty()){
+                val tempItem = mWaitingPool.poll()
+                tempItem.x = mWith.toFloat()
+                tempItem.y = key.toFloat()
+                mEmptyLine.put(key,tempItem)
+                mUsingPool.add(tempItem)
+                break
+            }
+        }
+    }
+
+    override fun addDanMu(danmu: DanMu) {
+        var item: Item = ItemPool.intance.borrowItem(danmu) ?: return
+        item.getPaint().color = danmu.getTextColor()
+        item.getPaint().textSize = danmu.getTextSize()
+        item.muLength = item.getPaint().measureText(item.mu.getInfo())
+        mWaitingPool?.add(item)
+    }
+
+    override fun realease() {
+        mWaitingPool.clear()
+        mUsingPool.clear()
+        ItemPool.intance.release()
+    }
+
 }

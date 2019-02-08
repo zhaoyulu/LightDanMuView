@@ -1,8 +1,10 @@
 package com.example.lightdanmu
 
+import android.graphics.Color
+
 class DanMu {
 
-    private val mDefaultColor: Int = -65535
+    private val mDefaultColor: Int = Color.GREEN
     private val mDefaultTextSize: Float = 55.0F
 
     @Volatile
@@ -30,10 +32,10 @@ class DanMu {
         this.mTextSize = mDefaultTextSize
     }
 
-    constructor(string: String, textSize: Float, textColor: Int) {
-        this.mInfo = string
-        this.mTextColor = textColor
-        this.mTextSize = textSize
-    }
+//    constructor(string: String, textSize: Float, textColor: Int) {
+//        this.mInfo = string
+//        this.mTextColor = textColor
+//        this.mTextSize = textSize
+//    }
 
 }

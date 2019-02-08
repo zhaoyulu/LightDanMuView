@@ -2,16 +2,16 @@ package com.example.lightdanmu
 
 import android.content.Context
 import android.graphics.Canvas
+import android.graphics.Color
+import android.graphics.PixelFormat
+import android.graphics.PorterDuff
 import android.util.AttributeSet
 import android.view.SurfaceHolder
 import android.view.SurfaceView
 
 class DanMuSurfaceView : SurfaceView, DanMuViewContact.View, SurfaceHolder.Callback,Runnable {
-
     constructor(context: Context) : this(context, null)
-
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
-
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
     private var mDanMuSurfacePresenter: DanMuViewContact.Presenter? = null
@@ -23,6 +23,8 @@ class DanMuSurfaceView : SurfaceView, DanMuViewContact.View, SurfaceHolder.Callb
 
 
     init {
+        setZOrderOnTop(true)
+        holder.setFormat(PixelFormat.TRANSLUCENT)
         mDanMuSurfacePresenter = DanMuSurfacePresenter(this)
         holder.addCallback(this)
     }
@@ -46,18 +48,19 @@ class DanMuSurfaceView : SurfaceView, DanMuViewContact.View, SurfaceHolder.Callb
 
     override fun run() {
         while (mIsDrawing){
-            draw()
             try {
                 Thread.sleep(16)
             } catch (e: InterruptedException) {
 
             }
+            draw()
         }
     }
 
     override fun draw() {
         try {
             mCanvas = holder.lockCanvas()
+            mCanvas?.drawColor(Color.TRANSPARENT, PorterDuff.Mode.CLEAR)
             mDanMuSurfacePresenter?.draw(mCanvas)
         } catch (e: Exception) {
 
@@ -68,4 +71,7 @@ class DanMuSurfaceView : SurfaceView, DanMuViewContact.View, SurfaceHolder.Callb
         }
     }
 
+    override fun addDanMu(danmu: DanMu) {
+        mDanMuSurfacePresenter?.addDanMu(danmu)
+    }
 }
