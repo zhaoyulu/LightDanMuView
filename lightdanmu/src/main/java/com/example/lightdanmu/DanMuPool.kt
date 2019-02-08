@@ -20,7 +20,7 @@ class DanMuPool private constructor() {
         if(mConcurrentLinkedQueue.size != 0){
             return mConcurrentLinkedQueue.peek()
         }
-        return DanMu()
+        return DanMu("")
     }
 
     protected fun returnDanMu(danMu: DanMu){

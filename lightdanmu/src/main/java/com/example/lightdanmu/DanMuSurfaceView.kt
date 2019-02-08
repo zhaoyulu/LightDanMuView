@@ -14,7 +14,7 @@ class DanMuSurfaceView : SurfaceView, DanMuViewContact.View, SurfaceHolder.Callb
 
     constructor(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr)
 
-    private var mDanMuSurfacePresenter: DanMuSurfacePresenter? = null
+    private var mDanMuSurfacePresenter: DanMuViewContact.Presenter? = null
     //用于绘图的canvas
     private var mCanvas: Canvas? = null
     //子线程标志位
@@ -24,9 +24,8 @@ class DanMuSurfaceView : SurfaceView, DanMuViewContact.View, SurfaceHolder.Callb
 
     init {
         mDanMuSurfacePresenter = DanMuSurfacePresenter(this)
+        holder.addCallback(this)
     }
-
-
 
     override fun surfaceChanged(holder: SurfaceHolder?, format: Int, width: Int, height: Int) {
         mDanMuSurfacePresenter?.setHeight(height)
@@ -37,17 +36,19 @@ class DanMuSurfaceView : SurfaceView, DanMuViewContact.View, SurfaceHolder.Callb
         mIsDrawing = false
     }
 
-    override fun surfaceCreated(holder: SurfaceHolder?) {
+
+    override fun surfaceCreated(holder: SurfaceHolder) {
         mIsDrawing = true
         mThread = Thread(this)
         mThread?.start()
     }
 
+
     override fun run() {
         while (mIsDrawing){
             draw()
             try {
-                Thread.sleep(20)
+                Thread.sleep(16)
             } catch (e: InterruptedException) {
 
             }
