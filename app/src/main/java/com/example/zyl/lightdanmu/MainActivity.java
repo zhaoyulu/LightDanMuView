@@ -10,11 +10,11 @@ import com.example.lightdanmu.DanMuSurfaceView;
 public class MainActivity extends AppCompatActivity {
 
     Handler handler=new Handler();
-
+    int i = 0;
     Runnable runnable=new Runnable(){
             @Override
             public void run() {
-                danmu.addDanMu(new DanMu("aaaa"));
+                danmu.addDanMu(new DanMu(i+++"aaaa"));
                 handler.postDelayed(this, 100);
             }
     };
