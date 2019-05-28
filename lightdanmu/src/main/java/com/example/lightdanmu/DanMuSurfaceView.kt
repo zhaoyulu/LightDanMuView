@@ -48,11 +48,6 @@ class DanMuSurfaceView : SurfaceView, DanMuViewContact.View, SurfaceHolder.Callb
 
     override fun run() {
         while (mIsDrawing){
-            try {
-                Thread.sleep(25)
-            } catch (e: InterruptedException) {
-
-            }
             draw()
         }
     }
