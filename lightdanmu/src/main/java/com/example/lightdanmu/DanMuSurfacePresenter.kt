@@ -5,6 +5,9 @@ import android.util.Log
 import android.util.SparseArray
 import java.util.*
 import java.util.concurrent.ConcurrentLinkedQueue
+import java.nio.file.Files.size
+
+
 
 
 class DanMuSurfacePresenter : DanMuViewContact.Presenter{
@@ -39,12 +42,16 @@ class DanMuSurfacePresenter : DanMuViewContact.Presenter{
     override fun  setHeight(int: Int){mHight = int}
 
     override fun draw(canvas: Canvas?) {
-        for (item:Item in mShowingPool){
+        var i = 0
+        while (i < mShowingPool.size) {
+            val item = mShowingPool.get(i)
             item.draw(canvas)
             if (item.x + item.muLength <=0){
                 mShowingPool.remove(item)
                 ItemPool.intance.returnDanMu(item)
+                i--
             }
+            i++
         }
         trigger()
     }
